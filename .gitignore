@@ -7,7 +7,9 @@
 
 # production
 /build
-
+/generate-date-commits.sh
+# generate-date-commits.sh
+generate-date-commits.sh
 # misc
 .DS_Store
 *.pem
