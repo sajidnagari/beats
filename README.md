@@ -18,7 +18,6 @@ the product with a clean visual hierarchy, motion effects, and a clear call to a
 - Main page: `app/page.tsx`
 - Global layout: `app/layout.tsx`
 - Styles: `app/globals.css`
-- Effects/components: `components/particle-background.tsx`, `components/reveal.tsx`
 
 ### Customize the Landing Page
 

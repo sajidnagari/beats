@@ -45,9 +45,14 @@ if [[ "$CURRENT_BRANCH" != "$TARGET_BRANCH" ]]; then
   fail "Branch must be '$TARGET_BRANCH'. Current branch is '$CURRENT_BRANCH'."
 fi
 
+if [[ "$REMOTE" != "origin" ]]; then
+  fail "This script is configured to push to 'origin/master'. Set REMOTE=origin."
+fi
 git remote get-url "$REMOTE" >/dev/null 2>&1 || fail "Remote '$REMOTE' is not configured."
-REMOTE_URL="$(git remote get-url "$REMOTE")"
-log "Remote '$REMOTE' URL: $REMOTE_URL"
+REMOTE_FETCH_URL="$(git remote get-url "$REMOTE")"
+REMOTE_PUSH_URL="$(git remote get-url --push "$REMOTE")"
+log "Remote '$REMOTE' fetch URL: $REMOTE_FETCH_URL"
+log "Remote '$REMOTE' push URL:  $REMOTE_PUSH_URL"
 
 SCHEDULE_FILE="$(mktemp)"
 cleanup() {
@@ -231,6 +236,17 @@ else
   log "Remote branch $REMOTE/$TARGET_BRANCH not found yet (will be created on push if allowed)."
 fi
 
+log "Calculating commits ahead of $REMOTE/$TARGET_BRANCH..."
+set +e
+AHEAD_COUNT="$(git rev-list --count "${REMOTE}/${TARGET_BRANCH}..HEAD" 2>/dev/null)"
+AHEAD_EXIT="$?"
+set -e
+if [[ "$AHEAD_EXIT" -ne 0 ]]; then
+  log "No local tracking ref for $REMOTE/$TARGET_BRANCH yet. Proceeding with push."
+else
+  log "Local branch is ahead by $AHEAD_COUNT commit(s)."
+fi
+
 log "Pushing to $REMOTE/$TARGET_BRANCH..."
 set +e
 PUSH_OUTPUT="$(git push "$REMOTE" "$TARGET_BRANCH" 2>&1)"
@@ -240,6 +256,9 @@ printf '%s\n' "$PUSH_OUTPUT"
 
 if [[ "$PUSH_EXIT" -ne 0 ]]; then
   log "Initial push failed (exit code: $PUSH_EXIT)."
+  if [[ "$PUSH_OUTPUT" == *"Authentication failed"* ]] || [[ "$PUSH_OUTPUT" == *"Permission denied"* ]] || [[ "$PUSH_OUTPUT" == *"could not read Username"* ]] || [[ "$PUSH_OUTPUT" == *"Repository not found"* ]]; then
+    fail "Authentication/authorization failed while pushing to $REMOTE/$TARGET_BRANCH. Review git credentials and remote access."
+  fi
   if [[ "$PUSH_OUTPUT" == *"rejected"* ]] || [[ "$PUSH_OUTPUT" == *"non-fast-forward"* ]] || [[ "$PUSH_OUTPUT" == *"fetch first"* ]] || [[ "$PUSH_OUTPUT" == *"failed to push some refs"* ]]; then
     log "Push was rejected. Retrying with force-with-lease..."
     set +e
@@ -273,4 +292,4 @@ if [[ "$REMOTE_HEAD_AFTER" != "$LOCAL_HEAD_NOW" ]]; then
 fi
 
 log "SUCCESS: commits are pushed and $REMOTE/$TARGET_BRANCH matches local HEAD."
-log "Your commits should now be visible on GitHub."
+log "Your commits are now visible on GitHub."
