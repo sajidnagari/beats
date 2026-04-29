@@ -1,70 +1,108 @@
 # beats
-Modern landing page application built with Next.js.
 
-## Landing Page
+Modern, dark SaaS-style landing page for a TikTok Analytics product, built with **Next.js App Router** and **Tailwind CSS**.
 
-The landing page is the main entry view of the application and is designed to present
-the product with a clean visual hierarchy, motion effects, and a clear call to action.
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5+-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-### Current Highlights
+## Preview
 
-- Hero section with strong headline and supporting text
-- Animated background for visual depth
-- Reveal-based section transitions for smoother scrolling experience
-- Responsive layout for desktop and mobile screens
+> Add your screenshot at `public/preview.png` to render this section nicely.
 
-### File Locations
+![Project Preview](./public/preview.png)
 
-- Main page: `app/page.tsx`
-- Global layout: `app/layout.tsx`
-- Styles: `app/globals.css`
+Optional links:
+- Live demo: `https://your-vercel-url.vercel.app`
+- Portfolio case study: `https://your-portfolio-url`
 
-### Customize the Landing Page
+## Tech Stack
 
-1. Update copy and section structure in `app/page.tsx`
-2. Adjust spacing, colors, and typography in `app/globals.css`
-3. Tune motion behavior in `components/reveal.tsx`
-4. Modify background visual effects in `components/particle-background.tsx`
+- **Framework**: Next.js 16 (App Router)
+- **UI**: React 19 + Tailwind CSS
+- **Language**: TypeScript
+- **Animations**:
+  - Canvas-based particle background (`components/particle-background.tsx`)
+  - Scroll reveal animation (`components/reveal.tsx`)
 
-## Commit Timeline Generator
+## Implemented Sections
 
-The repository also includes a reusable commit timeline generator script for creating
-date-based commit activity with realistic timing and message variation.
+The landing page in `app/page.tsx` includes:
 
-### Current Highlights
+- **Navbar**
+- **Hero** with particle background and CTAs
+- **Features**
+- **Advanced Features**
+- **Stats**
+- **Testimonials**
+- **Pricing**
+- **Integrations** (TikTok Ads, GA4, Slack, Notion)
+- **Use Cases** (Creator, Agency, Brand)
+- **FAQ**
+- **Final CTA**
+- **Footer**
 
-- Reusable date range support via `START_DATE` and `END_DATE`
-- Monthly commit volume in fixed mode or min/max random range
-- Weekly natural spread with randomized working hours
-- Optional weekend support and max commits per day limit
-- Unique, human-like commit messages with style selection
-- Dry-run mode and optional push control for safer execution
-- Uses `GIT_AUTHOR_DATE` and `GIT_COMMITTER_DATE`
-- Creates commits with `git commit --allow-empty`
+## Folder Structure
 
-### File Locations
+```text
+beats/
+├── app/
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+├── components/
+│   ├── particle-background.tsx
+│   └── reveal.tsx
+├── eslint.config.mjs
+├── next.config.ts
+├── package.json
+├── postcss.config.mjs
+├── tailwind.config.ts
+└── tsconfig.json
+```
 
-- Script: `generate-date-commits.sh`
+## Getting Started
 
-### Customize the Commit Timeline
+1. Install dependencies:
+   `npm install`
+2. Run development server:
+   `npm run dev`
+3. Open:
+   `http://localhost:3000`
 
-1. Set date range using `START_DATE` and `END_DATE`
-2. Choose fixed monthly activity with `COMMITS_PER_MONTH=8`
-3. Or randomize monthly activity using `COMMITS_PER_MONTH_MIN` and `COMMITS_PER_MONTH_MAX`
-4. Tune schedule with `WORK_HOUR_START`, `WORK_HOUR_END`, and `MAX_COMMITS_PER_DAY`
-5. Choose message style using `MESSAGE_STYLE=natural` or `MESSAGE_STYLE=conventional`
-6. Preview safely with `DRY_RUN=1` before running a real generation
-7. Control pushing behavior with `PUSH_ENABLED=0|1`, `REMOTE_NAME`, and `REMOTE_BRANCH`
+## Scripts
 
-### Example Commands
+- `npm run dev` – start local dev server
+- `npm run build` – create production build
+- `npm run start` – run production server
+- `npm run lint` – run ESLint
 
-1. Preview only:
-   `DRY_RUN=1 START_DATE=2021-01-01 END_DATE=2026-04-10 COMMITS_PER_MONTH=8 ./generate-date-commits.sh`
-2. Real run with randomized monthly activity:
-   `START_DATE=2021-01-01 END_DATE=2026-04-10 COMMITS_PER_MONTH_MIN=6 COMMITS_PER_MONTH_MAX=10 ./generate-date-commits.sh`
+## Deploy on Vercel
 
-### Troubleshooting
+### Option 1: Vercel Dashboard (recommended)
 
-1. macOS note: the script is compatible with the default `/bin/bash` (Bash 3), so no Bash upgrade is required.
-2. Always run a preview first with `DRY_RUN=1` to verify dates, volume, and commit message style.
-3. To avoid pushing while testing, use `PUSH_ENABLED=0` and review the local history before a final run.
+1. Push this repo to GitHub.
+2. Go to [Vercel](https://vercel.com/) and click **Add New Project**.
+3. Import the GitHub repository.
+4. Keep defaults (Framework auto-detected as Next.js).
+5. Click **Deploy**.
+
+### Option 2: Vercel CLI
+
+1. Install CLI:
+   `npm i -g vercel`
+2. Login:
+   `vercel login`
+3. Deploy:
+   `vercel`
+4. For production deployment:
+   `vercel --prod`
+
+## Customization Guide
+
+- **Content and section layout**: `app/page.tsx`
+- **Global styles and tokens**: `app/globals.css` and `tailwind.config.ts`
+- **Reveal animation behavior**: `components/reveal.tsx`
+- **Particle effect behavior**: `components/particle-background.tsx`
