@@ -10,6 +10,33 @@ const features = [
   { title: "Growth recommendations", description: "Get smart suggestions to improve consistency and boost reach." },
 ];
 
+const advancedFeatures = [
+  {
+    title: "Viral spike alerts",
+    description: "Get notified when a video starts trending so you can react with timely follow-up content.",
+  },
+  {
+    title: "Competitor benchmarking",
+    description: "Compare posting frequency, engagement rate, and growth velocity against similar creators.",
+  },
+  {
+    title: "Campaign attribution",
+    description: "Track which campaigns, sounds, and hashtags lead to profile visits and follower conversion.",
+  },
+  {
+    title: "Automated reporting",
+    description: "Export polished weekly and monthly performance reports for clients or internal teams.",
+  },
+  {
+    title: "Team collaboration",
+    description: "Share dashboards, assign action items, and align content, growth, and brand teams in one place.",
+  },
+  {
+    title: "Anomaly detection",
+    description: "Spot sudden drops or spikes in performance early with intelligent pattern detection.",
+  },
+];
+
 const stats = ["1M+ views tracked", "50K+ creators", "98% accuracy", "24/7 monitoring"];
 
 const testimonials = [
@@ -30,6 +57,71 @@ const testimonials = [
 const plans = [
   { name: "Starter", price: "$19/mo", description: "For solo creators testing growth", recommended: false },
   { name: "Pro", price: "$49/mo", description: "For teams scaling multiple accounts", recommended: true },
+];
+
+const integrations = [
+  {
+    name: "TikTok Ads",
+    description: "Unify paid and organic performance in one dashboard to see full-funnel impact.",
+  },
+  {
+    name: "GA4",
+    description: "Connect campaign traffic and conversion metrics to prove ROI from TikTok content.",
+  },
+  {
+    name: "Slack",
+    description: "Send performance alerts and weekly summaries directly to your team channels.",
+  },
+  {
+    name: "Notion",
+    description: "Sync insights into content calendars and planning docs for faster execution.",
+  },
+];
+
+const useCases = [
+  {
+    title: "For Creators",
+    points: [
+      "Find top-performing formats and posting times.",
+      "Track follower growth from each video and series.",
+      "Get clear recommendations without analytics overload.",
+    ],
+  },
+  {
+    title: "For Agencies",
+    points: [
+      "Manage multiple client accounts from one workspace.",
+      "Automate branded reports with KPI snapshots.",
+      "Benchmark clients against competitors in each niche.",
+    ],
+  },
+  {
+    title: "For Brands",
+    points: [
+      "Measure creator collaboration performance at scale.",
+      "Tie TikTok engagement to traffic and conversion outcomes.",
+      "Share cross-team dashboards for faster marketing decisions.",
+    ],
+  },
+];
+
+const faqs = [
+  {
+    question: "How quickly can I connect my TikTok account?",
+    answer: "Most users connect in under two minutes and start seeing data immediately.",
+  },
+  {
+    question: "Can I manage multiple profiles?",
+    answer: "Yes, Pro supports multiple profiles with account-level views and combined reporting.",
+  },
+  {
+    question: "Do you provide exports for client reporting?",
+    answer: "Yes, you can export performance summaries and recurring reports in a few clicks.",
+  },
+  {
+    question: "Is there a free trial?",
+    answer: "Yes, every plan starts with a free trial so you can evaluate your workflow risk-free.",
+  },
 ];
 
 export default function HomePage() {
@@ -97,6 +189,26 @@ export default function HomePage() {
         </Reveal>
       </section>
 
+      <section className="mx-auto max-w-6xl px-6 pb-12">
+        <Reveal>
+          <h2 className="mb-3 text-3xl font-semibold">Advanced Features</h2>
+          <p className="mb-8 max-w-3xl text-slate-300">
+            Built for creators, agencies, and growth teams that need deeper analytics beyond basic dashboards.
+          </p>
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {advancedFeatures.map((feature) => (
+              <article
+                key={feature.title}
+                className="rounded-2xl border border-indigo-300/20 bg-slate-900/50 p-6 backdrop-blur-md transition hover:-translate-y-1 hover:border-cyan-300/40"
+              >
+                <h3 className="text-lg font-semibold text-indigo-200">{feature.title}</h3>
+                <p className="mt-3 text-slate-300">{feature.description}</p>
+              </article>
+            ))}
+          </div>
+        </Reveal>
+      </section>
+
       <section className="mx-auto max-w-6xl px-6 py-10">
         <Reveal>
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
@@ -149,6 +261,80 @@ export default function HomePage() {
                 </button>
               </article>
             ))}
+          </div>
+        </Reveal>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <Reveal>
+          <h2 className="mb-3 text-3xl font-semibold">Integrations</h2>
+          <p className="mb-8 max-w-3xl text-slate-300">
+            Connect your existing growth stack and keep analytics, reporting, and team workflows in sync.
+          </p>
+          <div className="grid gap-5 md:grid-cols-2">
+            {integrations.map((integration) => (
+              <article
+                key={integration.name}
+                className="rounded-2xl border border-white/10 bg-slate-900/50 p-6 backdrop-blur-md transition hover:-translate-y-1 hover:border-cyan-300/40"
+              >
+                <h3 className="text-lg font-semibold text-cyan-300">{integration.name}</h3>
+                <p className="mt-3 text-slate-300">{integration.description}</p>
+              </article>
+            ))}
+          </div>
+        </Reveal>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <Reveal>
+          <h2 className="mb-8 text-3xl font-semibold">Use Cases</h2>
+          <div className="grid gap-5 md:grid-cols-3">
+            {useCases.map((item) => (
+              <article key={item.title} className="rounded-2xl border border-indigo-300/20 bg-indigo-400/5 p-6">
+                <h3 className="text-lg font-semibold text-indigo-200">{item.title}</h3>
+                <ul className="mt-4 space-y-3 text-slate-300">
+                  {item.points.map((point) => (
+                    <li key={point} className="flex items-start gap-2">
+                      <span className="mt-1 inline-block h-2 w-2 rounded-full bg-cyan-300" />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </Reveal>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <Reveal>
+          <h2 className="mb-8 text-3xl font-semibold">FAQ</h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            {faqs.map((faq) => (
+              <article key={faq.question} className="rounded-2xl border border-white/10 bg-slate-900/60 p-6">
+                <h3 className="text-base font-semibold text-slate-100">{faq.question}</h3>
+                <p className="mt-3 text-slate-300">{faq.answer}</p>
+              </article>
+            ))}
+          </div>
+        </Reveal>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 pb-20 pt-6">
+        <Reveal>
+          <div className="rounded-3xl border border-cyan-300/30 bg-gradient-to-r from-indigo-500/20 via-cyan-400/15 to-indigo-500/20 p-8 text-center shadow-glow md:p-12">
+            <h2 className="text-3xl font-semibold text-white md:text-4xl">Ready to scale your TikTok growth?</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-slate-200">
+              Start your free trial and turn performance data into content decisions that grow faster.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <button className="rounded-full bg-cyan-300 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:scale-[1.02] hover:bg-cyan-200">
+                Start Free Trial
+              </button>
+              <button className="rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:border-cyan-300/50 hover:bg-white/15">
+                Book a Demo
+              </button>
+            </div>
           </div>
         </Reveal>
       </section>
