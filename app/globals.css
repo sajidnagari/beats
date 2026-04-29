@@ -10,3 +10,24 @@ body {
   min-height: 100vh;
   background: #070b14;
 }
+
+.neon-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.neon-card::before {
+  content: "";
+  position: absolute;
+  inset: -150% auto auto -40%;
+  width: 60%;
+  height: 220%;
+  background: linear-gradient(110deg, transparent, rgba(103, 232, 249, 0.14), transparent);
+  transform: rotate(20deg) translateX(-120%);
+  transition: transform 700ms ease;
+  pointer-events: none;
+}
+
+.neon-card:hover::before {
+  transform: rotate(20deg) translateX(320%);
+}

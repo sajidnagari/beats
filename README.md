@@ -15,7 +15,7 @@ Modern, dark SaaS-style landing page for a TikTok Analytics product, built with 
 ![Project Preview](./public/preview.png)
 
 Optional links:
-- Live demo: `https://your-vercel-url.vercel.app`
+- Live demo: `https://beats-peach.vercel.app/`
 - Portfolio case study: `https://your-portfolio-url`
 
 ## Tech Stack

@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import ParticleBackground from "@/components/particle-background";
 import Reveal from "@/components/reveal";
 
@@ -124,7 +127,41 @@ const faqs = [
   },
 ];
 
+type ModalState = {
+  open: boolean;
+  title: string;
+  description: string;
+  cta: string;
+};
+
 export default function HomePage() {
+  const [modal, setModal] = useState<ModalState>({
+    open: false,
+    title: "",
+    description: "",
+    cta: "",
+  });
+
+  const openModal = (title: string, description: string, cta: string) => {
+    setModal({ open: true, title, description, cta });
+  };
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setModal((prev) => ({ ...prev, open: false }));
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  const buttonBase =
+    "rounded-full px-6 py-3 text-sm font-semibold transition duration-300 ease-out active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/80";
+  const cardBase =
+    "neon-card rounded-2xl border p-6 backdrop-blur-md transition duration-300 ease-out hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_18px_50px_rgba(34,211,238,0.18)]";
+
   return (
     <main>
       <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/70 backdrop-blur-xl">
@@ -139,7 +176,10 @@ export default function HomePage() {
               </a>
             ))}
           </nav>
-          <button className="rounded-full border border-cyan-300/40 bg-cyan-300/10 px-4 py-2 text-sm font-medium text-cyan-200 transition hover:border-cyan-200 hover:bg-cyan-300/20">
+          <button
+            onClick={() => openModal("Get Started", "Create your PulseTok workspace in minutes.", "Create account")}
+            className="rounded-full border border-cyan-300/40 bg-cyan-300/10 px-4 py-2 text-sm font-medium text-cyan-200 transition duration-300 hover:-translate-y-0.5 hover:border-cyan-200 hover:bg-cyan-300/20 hover:shadow-[0_10px_24px_rgba(34,211,238,0.18)]"
+          >
             Get Started
           </button>
         </div>
@@ -161,10 +201,24 @@ export default function HomePage() {
               strategy.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <button className="rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 px-6 py-3 text-sm font-semibold text-slate-950 shadow-glow transition hover:scale-[1.02]">
+              <button
+                onClick={() =>
+                  openModal(
+                    "Start Free Trial",
+                    "Launch a 14-day free trial and unlock all analytics modules.",
+                    "Start trial now",
+                  )
+                }
+                className={`${buttonBase} animate-pulse-glow bg-gradient-to-r from-indigo-500 to-cyan-400 text-slate-950 shadow-glow hover:scale-[1.05] hover:shadow-[0_20px_44px_rgba(99,102,241,0.45)]`}
+              >
                 Start Free Trial
               </button>
-              <button className="rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:border-cyan-300/40 hover:bg-white/10">
+              <button
+                onClick={() =>
+                  openModal("See Demo", "Watch a short walkthrough of dashboards, alerts, and reports.", "Watch demo")
+                }
+                className={`${buttonBase} border border-white/20 bg-white/5 text-slate-100 hover:scale-[1.04] hover:border-cyan-300/40 hover:bg-white/10 hover:shadow-[0_16px_30px_rgba(15,23,42,0.55)]`}
+              >
                 See Demo
               </button>
             </div>
@@ -179,7 +233,7 @@ export default function HomePage() {
             {features.map((feature) => (
               <article
                 key={feature.title}
-                className="rounded-2xl border border-white/10 bg-surface p-6 backdrop-blur-md transition hover:-translate-y-1 hover:border-cyan-300/40"
+                className={`${cardBase} border-white/10 bg-surface hover:border-cyan-300/40`}
               >
                 <h3 className="text-lg font-semibold text-cyan-300">{feature.title}</h3>
                 <p className="mt-3 text-slate-300">{feature.description}</p>
@@ -199,7 +253,7 @@ export default function HomePage() {
             {advancedFeatures.map((feature) => (
               <article
                 key={feature.title}
-                className="rounded-2xl border border-indigo-300/20 bg-slate-900/50 p-6 backdrop-blur-md transition hover:-translate-y-1 hover:border-cyan-300/40"
+                className={`${cardBase} border-indigo-300/20 bg-slate-900/50 hover:border-cyan-300/40`}
               >
                 <h3 className="text-lg font-semibold text-indigo-200">{feature.title}</h3>
                 <p className="mt-3 text-slate-300">{feature.description}</p>
@@ -213,7 +267,10 @@ export default function HomePage() {
         <Reveal>
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
             {stats.map((stat) => (
-              <div key={stat} className="rounded-2xl border border-indigo-400/20 bg-indigo-400/5 px-5 py-6 text-center">
+              <div
+                key={stat}
+                className="rounded-2xl border border-indigo-400/20 bg-indigo-400/5 px-5 py-6 text-center transition duration-300 hover:-translate-y-1 hover:border-indigo-300/40 hover:bg-indigo-400/10"
+              >
                 <p className="font-semibold text-indigo-200">{stat}</p>
               </div>
             ))}
@@ -226,7 +283,10 @@ export default function HomePage() {
           <h2 className="mb-8 text-3xl font-semibold">Testimonials</h2>
           <div className="grid gap-5 md:grid-cols-3">
             {testimonials.map((item) => (
-              <article key={item.author} className="rounded-2xl border border-white/10 bg-slate-900/60 p-6">
+              <article
+                key={item.author}
+                className={`${cardBase} border-white/10 bg-slate-900/60 hover:border-cyan-300/35`}
+              >
                 <p className="text-slate-300">"{item.quote}"</p>
                 <p className="mt-4 text-sm font-medium text-cyan-300">{item.author}</p>
               </article>
@@ -242,10 +302,10 @@ export default function HomePage() {
             {plans.map((plan) => (
               <article
                 key={plan.name}
-                className={`rounded-2xl border p-7 ${
+                className={`neon-card rounded-2xl border p-7 transition duration-300 hover:-translate-y-2 hover:scale-[1.01] ${
                   plan.recommended
-                    ? "animate-float border-cyan-300/50 bg-cyan-300/10 shadow-glow"
-                    : "border-white/10 bg-slate-900/50"
+                    ? "animate-float border-cyan-300/50 bg-cyan-300/10 shadow-glow hover:shadow-[0_20px_60px_rgba(34,211,238,0.28)]"
+                    : "border-white/10 bg-slate-900/50 hover:border-cyan-300/35 hover:shadow-[0_20px_60px_rgba(56,189,248,0.15)]"
                 }`}
               >
                 {plan.recommended && (
@@ -256,7 +316,16 @@ export default function HomePage() {
                 <h3 className="text-2xl font-semibold">{plan.name}</h3>
                 <p className="mt-2 text-3xl font-bold text-cyan-300">{plan.price}</p>
                 <p className="mt-2 text-slate-300">{plan.description}</p>
-                <button className="mt-6 rounded-full border border-white/20 px-5 py-2 text-sm font-medium transition hover:border-cyan-300/50 hover:text-cyan-200">
+                <button
+                  onClick={() =>
+                    openModal(
+                      `Choose ${plan.name}`,
+                      `You selected the ${plan.name} plan. We can now set up billing and workspace preferences.`,
+                      `Continue with ${plan.name}`,
+                    )
+                  }
+                  className="mt-6 rounded-full border border-white/20 px-5 py-2 text-sm font-medium transition duration-300 hover:-translate-y-1 hover:scale-[1.03] hover:border-cyan-300/50 hover:text-cyan-200 hover:shadow-[0_14px_30px_rgba(34,211,238,0.25)]"
+                >
                   Choose {plan.name}
                 </button>
               </article>
@@ -275,7 +344,7 @@ export default function HomePage() {
             {integrations.map((integration) => (
               <article
                 key={integration.name}
-                className="rounded-2xl border border-white/10 bg-slate-900/50 p-6 backdrop-blur-md transition hover:-translate-y-1 hover:border-cyan-300/40"
+                className={`${cardBase} border-white/10 bg-slate-900/50 hover:border-cyan-300/40`}
               >
                 <h3 className="text-lg font-semibold text-cyan-300">{integration.name}</h3>
                 <p className="mt-3 text-slate-300">{integration.description}</p>
@@ -290,7 +359,10 @@ export default function HomePage() {
           <h2 className="mb-8 text-3xl font-semibold">Use Cases</h2>
           <div className="grid gap-5 md:grid-cols-3">
             {useCases.map((item) => (
-              <article key={item.title} className="rounded-2xl border border-indigo-300/20 bg-indigo-400/5 p-6">
+              <article
+                key={item.title}
+                className={`${cardBase} border-indigo-300/20 bg-indigo-400/5 hover:border-cyan-300/35`}
+              >
                 <h3 className="text-lg font-semibold text-indigo-200">{item.title}</h3>
                 <ul className="mt-4 space-y-3 text-slate-300">
                   {item.points.map((point) => (
@@ -311,7 +383,10 @@ export default function HomePage() {
           <h2 className="mb-8 text-3xl font-semibold">FAQ</h2>
           <div className="grid gap-4 md:grid-cols-2">
             {faqs.map((faq) => (
-              <article key={faq.question} className="rounded-2xl border border-white/10 bg-slate-900/60 p-6">
+              <article
+                key={faq.question}
+                className={`${cardBase} border-white/10 bg-slate-900/60 hover:border-cyan-300/35`}
+              >
                 <h3 className="text-base font-semibold text-slate-100">{faq.question}</h3>
                 <p className="mt-3 text-slate-300">{faq.answer}</p>
               </article>
@@ -328,10 +403,20 @@ export default function HomePage() {
               Start your free trial and turn performance data into content decisions that grow faster.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-              <button className="rounded-full bg-cyan-300 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:scale-[1.02] hover:bg-cyan-200">
+              <button
+                onClick={() =>
+                  openModal("Start Free Trial", "Activate your trial and import your TikTok profile today.", "Start trial")
+                }
+                className={`${buttonBase} animate-pulse-glow bg-cyan-300 text-slate-950 hover:scale-[1.05] hover:bg-cyan-200 hover:shadow-[0_18px_40px_rgba(34,211,238,0.4)]`}
+              >
                 Start Free Trial
               </button>
-              <button className="rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:border-cyan-300/50 hover:bg-white/15">
+              <button
+                onClick={() =>
+                  openModal("Book a Demo", "Pick a time and we will walk your team through PulseTok live.", "Schedule demo")
+                }
+                className={`${buttonBase} border border-white/30 bg-white/10 text-slate-100 hover:scale-[1.04] hover:border-cyan-300/50 hover:bg-white/15 hover:shadow-[0_16px_30px_rgba(15,23,42,0.55)]`}
+              >
                 Book a Demo
               </button>
             </div>
@@ -343,18 +428,83 @@ export default function HomePage() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 text-sm text-slate-400 md:flex-row">
           <p>© {new Date().getFullYear()} PulseTok Analytics. All rights reserved.</p>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-cyan-300">
-              X
+            <a
+              href="https://github.com/sajidnagari"
+              target="_blank"
+              rel="noreferrer"
+              className="transition duration-300 hover:-translate-y-0.5 hover:text-cyan-300"
+            >
+              GitHub
             </a>
-            <a href="#" className="hover:text-cyan-300">
+            <a
+              href="https://www.linkedin.com/in/sajidnagari/"
+              target="_blank"
+              rel="noreferrer"
+              className="transition duration-300 hover:-translate-y-0.5 hover:text-cyan-300"
+            >
               LinkedIn
             </a>
-            <a href="#" className="hover:text-cyan-300">
+            <a
+              href="https://www.instagram.com/sajid_ali_05/"
+              target="_blank"
+              rel="noreferrer"
+              className="transition duration-300 hover:-translate-y-0.5 hover:text-cyan-300"
+            >
+              Instagram
+            </a>
+            <a
+              href="https://www.facebook.com/sajidaly05/"
+              target="_blank"
+              rel="noreferrer"
+              className="transition duration-300 hover:-translate-y-0.5 hover:text-cyan-300"
+            >
+              Facebook
+            </a>
+            <a
+              href="https://www.youtube.com/@sajidnagari"
+              target="_blank"
+              rel="noreferrer"
+              className="transition duration-300 hover:-translate-y-0.5 hover:text-cyan-300"
+            >
               YouTube
             </a>
           </div>
         </div>
       </footer>
+
+      {modal.open && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/70 px-4 backdrop-blur-sm"
+          onClick={() => setModal((prev) => ({ ...prev, open: false }))}
+        >
+          <div
+            className="animate-modal-in w-full max-w-md rounded-2xl border border-cyan-300/30 bg-slate-900/95 p-6 shadow-[0_24px_90px_rgba(34,211,238,0.28)]"
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="cta-modal-title"
+          >
+            <h3 id="cta-modal-title" className="text-xl font-semibold text-white">
+              {modal.title}
+            </h3>
+            <p className="mt-3 text-slate-300">{modal.description}</p>
+            <div className="mt-6 flex items-center justify-end gap-3">
+              <button
+                className="rounded-full border border-white/20 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-white/40"
+                onClick={() => setModal((prev) => ({ ...prev, open: false }))}
+              >
+                Close
+              </button>
+              <button
+                className="rounded-full bg-cyan-300 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200"
+                onClick={() => setModal((prev) => ({ ...prev, open: false }))}
+              >
+                {modal.cta}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

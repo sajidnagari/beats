@@ -16,9 +16,19 @@ const config: Config = {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-8px)" },
         },
+        pulseGlow: {
+          "0%, 100%": { boxShadow: "0 0 0 rgba(34, 211, 238, 0)" },
+          "50%": { boxShadow: "0 0 30px rgba(34, 211, 238, 0.3)" },
+        },
+        modalIn: {
+          "0%": { opacity: "0", transform: "translateY(10px) scale(0.96)" },
+          "100%": { opacity: "1", transform: "translateY(0) scale(1)" },
+        },
       },
       animation: {
         float: "float 6s ease-in-out infinite",
+        "pulse-glow": "pulseGlow 2.2s ease-in-out infinite",
+        "modal-in": "modalIn 240ms ease-out forwards",
       },
     },
   },
