@@ -32,8 +32,11 @@ Modern, dark SaaS-style landing page for a TikTok Analytics product, built with 
 
 ## Implemented Sections
 
-- Navbar with mobile menu
+- Navbar with mobile menu + Login
 - Hero with dashboard preview mockup
+- Login page with demo credentials
+- Protected dashboard with sidebar navigation
+- Dashboard pages: Overview, Analytics, Content, Audience, Settings
 - Features + Advanced Features
 - Animated stats
 - Testimonials with avatars
@@ -49,10 +52,24 @@ Modern, dark SaaS-style landing page for a TikTok Analytics product, built with 
 ```text
 beats/
 ├── app/
+│   ├── dashboard/
+│   │   ├── analytics/page.tsx
+│   │   ├── audience/page.tsx
+│   │   ├── content/page.tsx
+│   │   ├── settings/page.tsx
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── login/page.tsx
 │   ├── globals.css
 │   ├── layout.tsx
 │   └── page.tsx
 ├── components/
+│   ├── dashboard/
+│   │   ├── dashboard-shell.tsx
+│   │   ├── header.tsx
+│   │   ├── metric-card.tsx
+│   │   ├── mini-chart.tsx
+│   │   └── sidebar.tsx
 │   ├── cta-modal.tsx
 │   ├── dashboard-preview.tsx
 │   ├── faq-accordion.tsx
@@ -64,6 +81,8 @@ beats/
 │   ├── social-icon.tsx
 │   └── stat-counter.tsx
 ├── lib/
+│   ├── auth-context.tsx
+│   ├── dashboard-data.ts
 │   ├── data.ts
 │   ├── modal-types.ts
 │   └── styles.ts
@@ -83,6 +102,12 @@ beats/
    `npm run dev`
 3. Open:
    `http://localhost:3000`
+
+## Demo Login
+
+- URL: `/login`
+- Email: `demo@pulsetok.io`
+- Password: `demo123`
 
 ## Scripts
 

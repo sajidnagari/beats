@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { navItems } from "@/lib/data";
 import type { ModalType } from "@/lib/modal-types";
@@ -33,6 +34,12 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
         </nav>
 
         <div className="flex items-center gap-3">
+          <Link
+            href="/login"
+            className="hidden rounded-full border border-white/20 px-4 py-2 text-sm font-medium text-slate-200 transition duration-300 hover:-translate-y-0.5 hover:border-cyan-300/40 hover:text-cyan-200 sm:inline-flex"
+          >
+            Login
+          </Link>
           <button
             onClick={() => onOpenModal("get-started")}
             className="hidden rounded-full border border-cyan-300/40 bg-cyan-300/10 px-4 py-2 text-sm font-medium text-cyan-200 transition duration-300 hover:-translate-y-0.5 hover:border-cyan-200 hover:bg-cyan-300/20 hover:shadow-[0_10px_24px_rgba(34,211,238,0.18)] sm:inline-flex"
@@ -64,6 +71,13 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
                 {item}
               </a>
             ))}
+            <Link
+              href="/login"
+              onClick={closeMenu}
+              className="rounded-lg px-2 py-2 text-sm text-slate-300 transition hover:bg-white/5 hover:text-cyan-300"
+            >
+              Login
+            </Link>
             <button
               onClick={() => {
                 closeMenu();

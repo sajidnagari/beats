@@ -1,0 +1,40 @@
+"use client";
+
+import DashboardShell from "@/components/dashboard/dashboard-shell";
+import { contentFormats, topVideos } from "@/lib/dashboard-data";
+
+export default function ContentPage() {
+  return (
+    <DashboardShell title="Content" subtitle="Track what content formats perform best">
+      <div className="grid gap-4 md:grid-cols-2">
+        {contentFormats.map((item) => (
+          <article
+            key={item.format}
+            className="neon-card rounded-2xl border border-white/10 bg-slate-900/60 p-5 transition hover:border-cyan-300/30"
+          >
+            <h3 className="text-lg font-semibold text-cyan-200">{item.format}</h3>
+            <p className="mt-2 text-sm text-slate-400">{item.posts} posts published</p>
+            <p className="mt-1 text-xl font-semibold text-white">{item.avgViews} avg views</p>
+          </article>
+        ))}
+      </div>
+
+      <section className="mt-6 rounded-2xl border border-white/10 bg-slate-900/60 p-5">
+        <h2 className="text-lg font-semibold text-white">Recent top videos</h2>
+        <ul className="mt-4 space-y-3">
+          {topVideos.map((video) => (
+            <li
+              key={video.title}
+              className="flex flex-col justify-between gap-2 rounded-xl border border-white/10 bg-white/5 p-4 sm:flex-row sm:items-center"
+            >
+              <span className="text-slate-200">{video.title}</span>
+              <span className="text-sm text-cyan-300">
+                {video.views} views · {video.engagement}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </DashboardShell>
+  );
+}
