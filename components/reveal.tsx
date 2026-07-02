@@ -17,7 +17,7 @@ export default function Reveal({ children }: { children: React.ReactNode }) {
           observer.disconnect();
         }
       },
-      { threshold: 0.15 },
+      { threshold: 0.16 },
     );
 
     observer.observe(node);
