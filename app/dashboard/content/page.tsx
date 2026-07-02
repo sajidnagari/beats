@@ -1,15 +1,33 @@
 "use client";
 
 import DashboardShell from "@/components/dashboard/dashboard-shell";
-import { contentFormats, topVideos } from "@/lib/dashboard-data";
+import { useContent } from "@/hooks/use-dashboard";
 
 export default function ContentPage() {
+  const { data, isLoading, isError } = useContent();
+
+  if (isLoading) {
+    return (
+      <DashboardShell title="Content" subtitle="Loading content data...">
+        <p className="text-slate-400">Fetching content metrics...</p>
+      </DashboardShell>
+    );
+  }
+
+  if (isError || !data) {
+    return (
+      <DashboardShell title="Content" subtitle="Error">
+        <p className="text-rose-300">Failed to load content data.</p>
+      </DashboardShell>
+    );
+  }
+
   return (
     <DashboardShell title="Content" subtitle="Track what content formats perform best">
       <div className="grid gap-4 md:grid-cols-2">
-        {contentFormats.map((item) => (
+        {data.formats.map((item) => (
           <article
-            key={item.format}
+            key={item.id}
             className="neon-card rounded-2xl border border-white/10 bg-slate-900/60 p-5 transition hover:border-cyan-300/30"
           >
             <h3 className="text-lg font-semibold text-cyan-200">{item.format}</h3>
@@ -22,9 +40,9 @@ export default function ContentPage() {
       <section className="mt-6 rounded-2xl border border-white/10 bg-slate-900/60 p-5">
         <h2 className="text-lg font-semibold text-white">Recent top videos</h2>
         <ul className="mt-4 space-y-3">
-          {topVideos.map((video) => (
+          {data.videos.map((video) => (
             <li
-              key={video.title}
+              key={video.id}
               className="flex flex-col justify-between gap-2 rounded-xl border border-white/10 bg-white/5 p-4 sm:flex-row sm:items-center"
             >
               <span className="text-slate-200">{video.title}</span>

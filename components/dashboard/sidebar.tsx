@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth-context";
+import { usePathname } from "next/navigation";
+import { useLogout, useMe } from "@/hooks/use-auth";
 import { sidebarLinks } from "@/lib/dashboard-data";
 
 type SidebarProps = {
@@ -12,12 +12,12 @@ type SidebarProps = {
 
 export default function Sidebar({ open, onClose }: SidebarProps) {
   const pathname = usePathname();
-  const router = useRouter();
-  const { user, logout } = useAuth();
+  const { data } = useMe();
+  const logout = useLogout();
+  const user = data?.user;
 
   const handleLogout = () => {
-    logout();
-    router.push("/login");
+    logout.mutate();
   };
 
   const isActive = (href: string) => {

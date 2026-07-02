@@ -105,8 +105,9 @@ export default function HomePage() {
 
       <section id="pricing" className="mx-auto max-w-6xl px-6 py-16">
         <Reveal>
-          <h2 className="mb-8 text-3xl font-semibold">Pricing</h2>
-          <div className="grid gap-5 md:grid-cols-2">
+          <h2 className="mb-3 text-3xl font-semibold">Pricing</h2>
+          <p className="mb-8 text-slate-400">14-day free trial on all plans · Save 2 months with annual billing</p>
+          <div className="grid gap-5 lg:grid-cols-3">
             {plans.map((plan) => (
               <article
                 key={plan.name}
@@ -123,6 +124,9 @@ export default function HomePage() {
                 )}
                 <h3 className="text-2xl font-semibold">{plan.name}</h3>
                 <p className="mt-2 text-3xl font-bold text-cyan-300">{plan.price}</p>
+                {"annualPrice" in plan && (
+                  <p className="mt-1 text-xs text-slate-400">or {plan.annualPrice} billed yearly</p>
+                )}
                 <p className="mt-2 text-slate-300">{plan.description}</p>
                 <ul className="mt-5 space-y-2">
                   {plan.features.map((feature) => (

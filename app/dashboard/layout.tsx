@@ -1,6 +1,6 @@
 "use client";
 
-import { useRequireAuth } from "@/lib/auth-context";
+import { useRequireAuth } from "@/hooks/use-auth";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { loading } = useRequireAuth();

@@ -1,6 +1,6 @@
-# beats
+# PulseTok Analytics (beats)
 
-Modern, dark SaaS-style landing page for a TikTok Analytics product, built with **Next.js App Router** and **Tailwind CSS**.
+A modern **TikTok Analytics** product concept built with **Next.js App Router** and **Tailwind CSS**.
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-beats--peach.vercel.app-06B6D4?style=for-the-badge)](https://beats-peach.vercel.app/)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
@@ -9,123 +9,250 @@ Modern, dark SaaS-style landing page for a TikTok Analytics product, built with 
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-## Live Demo
+**Live demo:** [https://beats-peach.vercel.app/](https://beats-peach.vercel.app/)
 
-**https://beats-peach.vercel.app/**
+---
 
-## Preview
+## Project Purpose
 
-> Add your screenshot at `public/preview.png` to render this section nicely.
+This project presents **PulseTok** — a fictional SaaS product for TikTok creators, agencies, and brands who want to track views, engagement, audience behavior, and content performance in one place.
 
-![Project Preview](./public/preview.png)
+### What this site is
+
+| Role | Description |
+|------|-------------|
+| **Frontend showcase** | Demonstrates modern SaaS UI patterns, animations, and responsive layout |
+| **Portfolio project** | Shows skills in Next.js, TypeScript, Tailwind, and component architecture |
+| **UI/UX prototype** | Visualizes how a TikTok analytics product could look and flow |
+| **Demo app** | Deployable landing page + login + dashboard you can share with clients or recruiters |
+
+### What this site is not (yet)
+
+The dashboard now uses a **real backend** (PostgreSQL + Prisma + API routes), but TikTok metrics are still **seeded demo data** until you connect the TikTok API.
+
+---
+
+## Backend (PostgreSQL + Prisma + React Query)
+
+### Stack
+- **Database:** PostgreSQL
+- **ORM:** Prisma 5
+- **API:** Next.js Route Handlers (`app/api/*`)
+- **Auth:** JWT session cookie (`jose`) + bcrypt passwords
+- **Data fetching:** TanStack React Query with reusable hooks
+
+### API routes
+| Method | Route | Purpose |
+|--------|-------|---------|
+| POST | `/api/auth/login` | Sign in |
+| POST | `/api/auth/register` | Create account |
+| POST | `/api/auth/logout` | Sign out |
+| GET | `/api/auth/me` | Current user |
+| GET | `/api/dashboard/overview` | Overview metrics |
+| GET | `/api/dashboard/analytics` | Analytics data |
+| GET | `/api/dashboard/content` | Content data |
+| GET | `/api/dashboard/audience` | Audience data |
+| PATCH | `/api/dashboard/settings` | Update profile |
+
+### Reusable hooks (`hooks/`)
+| Hook | Purpose |
+|------|---------|
+| `useMe()` | Fetch current user |
+| `useLogin()` | Login mutation → invalidates `auth` + `dashboard` queries |
+| `useRegister()` | Register mutation → invalidates queries |
+| `useLogout()` | Logout → clears React Query cache |
+| `useOverview()` | Dashboard overview from DB |
+| `useAnalytics()` | Analytics from DB |
+| `useContent()` | Content from DB |
+| `useAudience()` | Audience from DB |
+| `useUpdateSettings()` | PATCH settings → invalidates `auth.me` + `dashboard` |
+
+Query keys are centralized in `lib/query-keys.ts` for consistent invalidation.
+
+### Database setup
+
+1. Copy env file:
+   ```bash
+   cp .env.example .env
+   ```
+2. Set `DATABASE_URL` and `AUTH_SECRET` in `.env`
+3. Push schema and seed:
+   ```bash
+   npm run db:push
+   npm run db:seed
+   ```
+4. Start app:
+   ```bash
+   npm run dev
+   ```
+
+### DB scripts
+| Command | Description |
+|---------|-------------|
+| `npm run db:push` | Sync Prisma schema to PostgreSQL |
+| `npm run db:migrate` | Create migration |
+| `npm run db:seed` | Seed demo user + metrics |
+| `npm run db:studio` | Open Prisma Studio |
+
+---
+
+## Features
+
+### Landing page
+- Hero with particle background and dashboard preview mockup
+- Features, advanced features, animated stats, testimonials
+- Pricing, integrations, use cases, FAQ accordion
+- CTA modals, contact footer, social links
+
+### App experience
+- Login page (`/login`)
+- Protected dashboard with sidebar navigation
+- Pages: Overview, Analytics, Content, Audience, Settings
+
+### Demo login
+
+| Field | Value |
+|-------|--------|
+| URL | `/login` |
+| Email | `demo@pulsetok.io` |
+| Password | `demo123` |
+
+---
+
+## Can we add real TikTok data?
+
+**Yes — next step is TikTok API integration.** The backend is ready; you would add:
+
+1. `app/api/auth/tiktok` — OAuth flow
+2. `app/api/sync` — fetch and store live metrics in existing Prisma models
+3. Cron job to refresh video stats daily
+4. Environment variables for TikTok client ID/secret (server-side only)
+
+Until then, dashboard data comes from PostgreSQL (seeded demo metrics per user).
+
+---
+
+## Pricing — what to include
+
+For a TikTok analytics SaaS, pricing should map **features to audience size**. Recommended structure:
+
+### Starter — solo creators (~$19–29/mo)
+- 1 TikTok account
+- Real-time basic analytics (views, engagement, followers)
+- 30-day data history
+- Weekly email summary
+- Export CSV (limited)
+
+### Pro — serious creators & small teams (~$49–79/mo) ⭐ Recommended
+- Up to 5–10 accounts
+- Advanced insights (best posting times, content breakdown)
+- Viral spike alerts
+- Competitor benchmarking (limited)
+- Unlimited data history
+- Branded PDF reports
+- Team collaboration (2–3 seats)
+
+### Agency — agencies & brands (~$149–299/mo)
+- 25+ client accounts
+- White-label client reports
+- Multi-user workspace (10+ seats)
+- API access
+- Priority support + onboarding
+- Custom integrations (Slack, GA4, Notion)
+
+### Pricing page best practices
+- Show **annual billing** (e.g. 2 months free) to increase conversions
+- Highlight one plan as **Recommended**
+- List **concrete limits** (accounts, seats, history days) — not vague bullets
+- Add **14-day free trial** on paid plans
+- Optional **Free tier**: 1 account, 7-day history, watermark on exports
+
+Current plan copy lives in `lib/data.ts` and can be edited there.
+
+---
 
 ## Tech Stack
 
-- **Framework**: Next.js 16 (App Router)
-- **UI**: React 19 + Tailwind CSS
-- **Language**: TypeScript
-- **Animations**:
-  - Canvas-based particle background
-  - Scroll reveal transitions
-  - Animated stat counters
-  - Interactive FAQ accordion
+- **Framework:** Next.js 16 (App Router)
+- **UI:** React 19 + Tailwind CSS
+- **Language:** TypeScript
+- **Database:** PostgreSQL + Prisma
+- **Data fetching:** TanStack React Query
+- **Auth:** JWT httpOnly cookies + bcrypt
+- **Deploy:** Vercel (+ PostgreSQL via Neon, Supabase, or Railway)
 
-## Implemented Sections
+---
 
-- Navbar with mobile menu + Login
-- Hero with dashboard preview mockup
-- Login page with demo credentials
-- Protected dashboard with sidebar navigation
-- Dashboard pages: Overview, Analytics, Content, Audience, Settings
-- Features + Advanced Features
-- Animated stats
-- Testimonials with avatars
-- Pricing with plan feature lists
-- Integrations with icon badges
-- Use Cases
-- FAQ accordion
-- Final CTA
-- Contact footer with form + social icons
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000)
+
+### Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build |
+| `npm run start` | Run production server |
+| `npm run lint` | Run ESLint |
+
+---
 
 ## Folder Structure
 
 ```text
 beats/
 ├── app/
-│   ├── dashboard/
-│   │   ├── analytics/page.tsx
-│   │   ├── audience/page.tsx
-│   │   ├── content/page.tsx
-│   │   ├── settings/page.tsx
-│   │   ├── layout.tsx
-│   │   └── page.tsx
-│   ├── login/page.tsx
-│   ├── globals.css
+│   ├── dashboard/          # Protected analytics dashboard
+│   ├── login/              # Demo login page
 │   ├── layout.tsx
-│   └── page.tsx
+│   ├── page.tsx            # Landing page
+│   └── globals.css
 ├── components/
-│   ├── dashboard/
-│   │   ├── dashboard-shell.tsx
-│   │   ├── header.tsx
-│   │   ├── metric-card.tsx
-│   │   ├── mini-chart.tsx
-│   │   └── sidebar.tsx
+│   ├── dashboard/          # Sidebar, charts, shell
 │   ├── cta-modal.tsx
-│   ├── dashboard-preview.tsx
-│   ├── faq-accordion.tsx
-│   ├── footer.tsx
 │   ├── hero.tsx
 │   ├── navbar.tsx
-│   ├── particle-background.tsx
-│   ├── reveal.tsx
-│   ├── social-icon.tsx
-│   └── stat-counter.tsx
+│   └── ...
+├── hooks/
+│   ├── use-auth.ts         # Auth queries & mutations
+│   └── use-dashboard.ts    # Dashboard queries & mutations
 ├── lib/
-│   ├── auth-context.tsx
-│   ├── dashboard-data.ts
-│   ├── data.ts
-│   ├── modal-types.ts
-│   └── styles.ts
-├── eslint.config.mjs
-├── next.config.ts
-├── package.json
-├── postcss.config.mjs
-├── tailwind.config.ts
-└── tsconfig.json
+│   ├── api-client.ts
+│   ├── prisma.ts
+│   ├── query-keys.ts
+│   ├── session.ts
+│   └── types/api.ts
+├── prisma/
+│   ├── schema.prisma
+│   └── seed.ts
+└── ...
 ```
 
-## Getting Started
-
-1. Install dependencies:
-   `npm install`
-2. Run development server:
-   `npm run dev`
-3. Open:
-   `http://localhost:3000`
-
-## Demo Login
-
-- URL: `/login`
-- Email: `demo@pulsetok.io`
-- Password: `demo123`
-
-## Scripts
-
-- `npm run dev` – start local dev server
-- `npm run build` – create production build
-- `npm run start` – run production server
-- `npm run lint` – run ESLint
+---
 
 ## Deploy on Vercel
 
-1. Push this repo to GitHub.
-2. Import the project in [Vercel](https://vercel.com/).
-3. Deploy with default Next.js settings.
+1. Push to GitHub
+2. Import repo at [vercel.com](https://vercel.com/)
+3. Deploy (Next.js auto-detected)
 
-## Customization Guide
+---
 
-- **Content and section layout**: `lib/data.ts` and `app/page.tsx`
-- **Global styles and tokens**: `app/globals.css` and `tailwind.config.ts`
-- **Modal forms**: `components/cta-modal.tsx`
-- **Reveal animation behavior**: `components/reveal.tsx`
-- **Particle effect behavior**: `components/particle-background.tsx`
+## Author
+
+Built by [Sajid Ali](https://github.com/sajidnagari)
+
+- GitHub: [github.com/sajidnagari](https://github.com/sajidnagari)
+- LinkedIn: [linkedin.com/in/sajidnagari](https://www.linkedin.com/in/sajidnagari/)
+
+---
+
+## License
+
+MIT — see [LICENSE](./LICENSE)

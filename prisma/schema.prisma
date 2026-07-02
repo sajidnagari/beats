@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  plan      String   @default("Pro")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  metrics       DashboardMetric[]
+  videos        Video[]
+  audienceSegs  AudienceSegment[]
+  contentFmts   ContentFormat[]
+  dailyViews    DailyViewStat[]
+}
+
+model DashboardMetric {
+  id       String  @id @default(cuid())
+  userId   String
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label    String
+  value    String
+  change   String
+  positive Boolean @default(true)
+  order    Int     @default(0)
+
+  @@index([userId])
+}
+
+model Video {
+  id         String @id @default(cuid())
+  userId     String
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title      String
+  views      String
+  engagement String
+  trend      String
+  order      Int    @default(0)
+
+  @@index([userId])
+}
+
+model AudienceSegment {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label  String
+  value  Int
+  order  Int    @default(0)
+
+  @@index([userId])
+}
+
+model ContentFormat {
+  id       String @id @default(cuid())
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  format   String
+  posts    Int
+  avgViews String
+  order    Int    @default(0)
+
+  @@index([userId])
+}
+
+model DailyViewStat {
+  id     String   @id @default(cuid())
+  userId String
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  day    DateTime
+  value  Int
+
+  @@index([userId, day])
+}
