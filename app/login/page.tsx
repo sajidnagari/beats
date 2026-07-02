@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useLogin, useMe } from "@/hooks/use-auth";
+import { ApiError, getApiErrorMessage } from "@/lib/api-client";
 import { buttonBase } from "@/lib/styles";
 
 export default function LoginPage() {
@@ -50,9 +51,12 @@ export default function LoginPage() {
           />
 
           {login.isError && (
-            <p className="text-sm text-rose-300">
-              {login.error instanceof Error ? login.error.message : "Login failed"}
-            </p>
+            <div className="rounded-xl border border-rose-400/30 bg-rose-400/10 p-3 text-sm text-rose-200">
+              <p>{getApiErrorMessage(login.error, "Login failed")}</p>
+              {login.error instanceof ApiError && login.error.code !== "ERROR" && (
+                <p className="mt-1 text-xs text-rose-200/70">Code: {login.error.code}</p>
+              )}
+            </div>
           )}
 
           <button

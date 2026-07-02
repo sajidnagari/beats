@@ -1,5 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import { getAuthSecret } from "@/lib/env";
 
 const SESSION_COOKIE = "pulsetok_session";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
@@ -11,9 +12,7 @@ type SessionPayload = {
 };
 
 function getSecret() {
-  const secret = process.env.AUTH_SECRET;
-  if (!secret) throw new Error("AUTH_SECRET is not set");
-  return new TextEncoder().encode(secret);
+  return new TextEncoder().encode(getAuthSecret());
 }
 
 export async function createSession(payload: SessionPayload) {

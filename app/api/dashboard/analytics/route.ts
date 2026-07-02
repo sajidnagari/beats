@@ -1,11 +1,12 @@
 import { jsonError, jsonOk } from "@/lib/api-response";
+import { withApiRoute } from "@/lib/api-route";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
 
 export async function GET() {
-  try {
+  return withApiRoute(async () => {
     const session = await getSession();
-    if (!session) return jsonError("Unauthorized", 401);
+    if (!session) return jsonError("Unauthorized", 401, "UNAUTHORIZED");
 
     const [metrics, dailyViews] = await Promise.all([
       prisma.dashboardMetric.findMany({
@@ -29,7 +30,5 @@ export async function GET() {
         { label: "Comments", value: "4.9K" },
       ],
     });
-  } catch {
-    return jsonError("Failed to load analytics", 500);
-  }
+  });
 }

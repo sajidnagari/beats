@@ -1,10 +1,12 @@
 "use client";
 
+import ApiErrorState from "@/components/api-error-state";
 import DashboardShell from "@/components/dashboard/dashboard-shell";
 import { useAudience } from "@/hooks/use-dashboard";
+import { ApiError, getApiErrorMessage } from "@/lib/api-client";
 
 export default function AudiencePage() {
-  const { data, isLoading, isError } = useAudience();
+  const { data, isLoading, isError, error } = useAudience();
 
   if (isLoading) {
     return (
@@ -16,8 +18,11 @@ export default function AudiencePage() {
 
   if (isError || !data) {
     return (
-      <DashboardShell title="Audience" subtitle="Error">
-        <p className="text-rose-300">Failed to load audience data.</p>
+      <DashboardShell title="Audience" subtitle="Unable to load audience data">
+        <ApiErrorState
+          message={getApiErrorMessage(error, "Failed to load audience data.")}
+          code={error instanceof ApiError ? error.code : undefined}
+        />
       </DashboardShell>
     );
   }

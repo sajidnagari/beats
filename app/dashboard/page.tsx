@@ -1,12 +1,14 @@
 "use client";
 
+import ApiErrorState from "@/components/api-error-state";
 import DashboardShell from "@/components/dashboard/dashboard-shell";
 import MetricCard from "@/components/dashboard/metric-card";
 import MiniChart from "@/components/dashboard/mini-chart";
 import { useOverview } from "@/hooks/use-dashboard";
+import { ApiError, getApiErrorMessage } from "@/lib/api-client";
 
 export default function DashboardOverviewPage() {
-  const { data, isLoading, isError } = useOverview();
+  const { data, isLoading, isError, error } = useOverview();
 
   if (isLoading) {
     return (
@@ -19,7 +21,10 @@ export default function DashboardOverviewPage() {
   if (isError || !data) {
     return (
       <DashboardShell title="Overview" subtitle="Unable to load metrics">
-        <p className="text-rose-300">Failed to load dashboard data. Check database connection.</p>
+        <ApiErrorState
+          message={getApiErrorMessage(error, "Failed to load dashboard data.")}
+          code={error instanceof ApiError ? error.code : undefined}
+        />
       </DashboardShell>
     );
   }

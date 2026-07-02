@@ -1,12 +1,14 @@
 "use client";
 
+import ApiErrorState from "@/components/api-error-state";
 import DashboardShell from "@/components/dashboard/dashboard-shell";
 import MetricCard from "@/components/dashboard/metric-card";
 import MiniChart from "@/components/dashboard/mini-chart";
 import { useAnalytics } from "@/hooks/use-dashboard";
+import { ApiError, getApiErrorMessage } from "@/lib/api-client";
 
 export default function AnalyticsPage() {
-  const { data, isLoading, isError } = useAnalytics();
+  const { data, isLoading, isError, error } = useAnalytics();
 
   if (isLoading) {
     return (
@@ -18,8 +20,11 @@ export default function AnalyticsPage() {
 
   if (isError || !data) {
     return (
-      <DashboardShell title="Analytics" subtitle="Error">
-        <p className="text-rose-300">Failed to load analytics.</p>
+      <DashboardShell title="Analytics" subtitle="Unable to load analytics">
+        <ApiErrorState
+          message={getApiErrorMessage(error, "Failed to load analytics.")}
+          code={error instanceof ApiError ? error.code : undefined}
+        />
       </DashboardShell>
     );
   }

@@ -1,10 +1,12 @@
 "use client";
 
+import ApiErrorState from "@/components/api-error-state";
 import DashboardShell from "@/components/dashboard/dashboard-shell";
 import { useContent } from "@/hooks/use-dashboard";
+import { ApiError, getApiErrorMessage } from "@/lib/api-client";
 
 export default function ContentPage() {
-  const { data, isLoading, isError } = useContent();
+  const { data, isLoading, isError, error } = useContent();
 
   if (isLoading) {
     return (
@@ -16,8 +18,11 @@ export default function ContentPage() {
 
   if (isError || !data) {
     return (
-      <DashboardShell title="Content" subtitle="Error">
-        <p className="text-rose-300">Failed to load content data.</p>
+      <DashboardShell title="Content" subtitle="Unable to load content data">
+        <ApiErrorState
+          message={getApiErrorMessage(error, "Failed to load content data.")}
+          code={error instanceof ApiError ? error.code : undefined}
+        />
       </DashboardShell>
     );
   }

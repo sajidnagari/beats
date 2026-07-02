@@ -1,11 +1,12 @@
 import { jsonError, jsonOk } from "@/lib/api-response";
+import { withApiRoute } from "@/lib/api-route";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
 
 export async function GET() {
-  try {
+  return withApiRoute(async () => {
     const session = await getSession();
-    if (!session) return jsonError("Unauthorized", 401);
+    if (!session) return jsonError("Unauthorized", 401, "UNAUTHORIZED");
 
     const [formats, videos] = await Promise.all([
       prisma.contentFormat.findMany({
@@ -19,7 +20,5 @@ export async function GET() {
     ]);
 
     return jsonOk({ formats, videos });
-  } catch {
-    return jsonError("Failed to load content", 500);
-  }
+  });
 }

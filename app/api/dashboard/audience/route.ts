@@ -1,11 +1,12 @@
 import { jsonError, jsonOk } from "@/lib/api-response";
+import { withApiRoute } from "@/lib/api-route";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
 
 export async function GET() {
-  try {
+  return withApiRoute(async () => {
     const session = await getSession();
-    if (!session) return jsonError("Unauthorized", 401);
+    if (!session) return jsonError("Unauthorized", 401, "UNAUTHORIZED");
 
     const segments = await prisma.audienceSegment.findMany({
       where: { userId: session.userId },
@@ -21,7 +22,5 @@ export async function GET() {
         "Follower conversion rate: 3.8%",
       ],
     });
-  } catch {
-    return jsonError("Failed to load audience", 500);
-  }
+  });
 }
