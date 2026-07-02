@@ -58,6 +58,7 @@ export async function withApiRoute(handler: () => Promise<NextResponse>) {
   } catch (error) {
     console.error("[API]", error);
     const mapped = mapApiError(error);
+    console.error("[API]", mapped);
     return NextResponse.json(
       { error: mapped.message, code: mapped.code },
       { status: mapped.status },
