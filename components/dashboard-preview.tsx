@@ -21,6 +21,7 @@ export default function DashboardPreview() {
         ].map((item) => (
           <div key={item.label} className="rounded-xl border border-white/10 bg-white/5 p-3">
             <p className="text-xs text-slate-400">{item.label}</p>
+            
             <p className="mt-1 text-sm font-semibold text-cyan-200">{item.value}</p>
           </div>
         ))}
