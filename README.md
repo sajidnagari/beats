@@ -71,28 +71,44 @@ Query keys are centralized in `lib/query-keys.ts` for consistent invalidation.
 
 ### Database setup
 
-1. Copy env file:
+See **[docs/ENVIRONMENT.md](./docs/ENVIRONMENT.md)** for the full local vs production guide.
+
+**Local (quick start):**
+
+```bash
+cp .env.local.example .env.local
+# Edit DATABASE_URL + AUTH_SECRET (Neon development branch recommended)
+npm run db:push:local
+npm run db:seed:local
+npm run dev
+```
+
+**Production (Neon + Vercel):**
+
+1. Add `DATABASE_URL` + `AUTH_SECRET` in Vercel → Settings → Environment Variables (production Neon branch)
+2. Copy the same values to `.env.production` for CLI commands:
    ```bash
-   cp .env.example .env
+   cp .env.production.example .env.production
    ```
-2. Set `DATABASE_URL` and `AUTH_SECRET` in `.env`
-3. Push schema and seed:
+3. Push schema and seed production DB:
    ```bash
-   npm run db:push
-   npm run db:seed
+   npm run db:push:prod
+   npm run db:seed:prod
    ```
-4. Start app:
-   ```bash
-   npm run dev
-   ```
+4. Redeploy on Vercel, then verify `/api/health` and login
 
 ### DB scripts
-| Command | Description |
-|---------|-------------|
-| `npm run db:push` | Sync Prisma schema to PostgreSQL |
-| `npm run db:migrate` | Create migration |
-| `npm run db:seed` | Seed demo user + metrics |
-| `npm run db:studio` | Open Prisma Studio |
+
+| Command | Environment | Description |
+|---------|-------------|-------------|
+| `npm run db:push` | local | Sync schema (alias for `:local`) |
+| `npm run db:push:local` | `.env.local` | Sync schema to dev database |
+| `npm run db:push:prod` | `.env.production` | Sync schema to production Neon |
+| `npm run db:seed:local` | `.env.local` | Seed demo user + metrics (dev) |
+| `npm run db:seed:prod` | `.env.production` | Seed demo user + metrics (prod) |
+| `npm run db:migrate` | local | Create migration (dev) |
+| `npm run db:studio:local` | `.env.local` | Prisma Studio (dev) |
+| `npm run db:studio:prod` | `.env.production` | Prisma Studio (prod) |
 
 ---
 
@@ -240,7 +256,20 @@ beats/
 
 1. Push to GitHub
 2. Import repo at [vercel.com](https://vercel.com/)
-3. Deploy (Next.js auto-detected)
+3. Add environment variables (Production):
+   - `DATABASE_URL` — Neon **production** connection string
+   - `AUTH_SECRET` — long random secret (`openssl rand -base64 32`)
+4. Deploy, then run against production DB from your machine:
+   ```bash
+   cp .env.production.example .env.production
+   # paste same DATABASE_URL + AUTH_SECRET as Vercel
+   npm run db:push:prod
+   npm run db:seed:prod
+   ```
+5. Redeploy if env vars were added after first deploy
+6. Verify: `https://your-app.vercel.app/api/health` and login with `demo@pulsetok.io` / `demo123`
+
+Details: [docs/ENVIRONMENT.md](./docs/ENVIRONMENT.md)
 
 ---
 
